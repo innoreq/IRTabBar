@@ -19,6 +19,7 @@ public struct IRTabBar: UIViewControllerRepresentable {
 		
 		self._selectedIndex = selectedIndex
 		self._tabOrder = tabOrder
+		self.viewControllers = viewControllers
 	}
 	
 	
