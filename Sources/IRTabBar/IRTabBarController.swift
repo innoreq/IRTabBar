@@ -49,7 +49,7 @@ public struct IRTabBar: UIViewControllerRepresentable {
 		// Now we sort them according to the current sort order.
 		var sortedViewControllers: [UIViewController] = []
 		
-		if self.viewControllers.isEmpty {
+		if self.viewControllers.isEmpty || tabOrder.isEmpty {
 			
 			sortedViewControllers = unsortedViewControllers
 		} else {
