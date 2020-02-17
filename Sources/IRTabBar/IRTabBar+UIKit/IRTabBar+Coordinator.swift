@@ -38,7 +38,7 @@ extension IRTabBar {
 				}
 			}
 			
-			guard let index = tabBarController.customizableViewControllers?.index(of: viewController)
+			guard let index = tabBarController.customizableViewControllers?.firstIndex(of: viewController)
 				else { return }
 			
 			self.tabBarController.selectedIndex = index
