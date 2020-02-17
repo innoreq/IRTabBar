@@ -22,7 +22,7 @@ extension IRTabBar.Coordinator: UITableViewDelegate {
 	public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		
 		let moreCount = tableView.numberOfRows(inSection: indexPath.section)
-		let allCount = self.tabBarController.viewControllers.count
+		let allCount = self.tabBarController.tabBarItems.count
 		
 		self.tabBarController.selectedIndex = allCount - moreCount + indexPath.row
 		tableDelegate?.tableView?(tableView, didSelectRowAt: indexPath)

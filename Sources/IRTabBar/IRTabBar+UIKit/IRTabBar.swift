@@ -15,21 +15,21 @@ import SwiftUI
 public struct IRTabBar: UIViewControllerRepresentable {
 
 	
-	public init(viewControllers: [UIViewController],
+	public init(tabBarItems: [IRTabBarItem],
 				selectedIndex: Binding<Int>,
 				tabOrder: Binding<[Int]>) {
 		
 		self._selectedIndex = selectedIndex
 		self._tabOrder = tabOrder
-		self.viewControllers = viewControllers
+		self.tabBarItems = tabBarItems
 	}
 	
 	
 	public typealias UIViewControllerType = UITabBarController
 	
 	
-	/// This is the list of tab bar elements that the tab bar shall provide.
-	public var viewControllers: [UIViewController] = []
+	/// The tab bar items to present.
+	var tabBarItems: [IRTabBarItem]
 	
 	/// This is the currently selected index where the caller must bind to.
 	@Binding public var selectedIndex: Int
@@ -56,12 +56,18 @@ public struct IRTabBar: UIViewControllerRepresentable {
 		tabBarController.delegate = context.coordinator
 		
 		// We need the view controllers associated with the items, as well as the items themselves.
-		let unsortedViewControllers: [UIViewController] = viewControllers
+		let unsortedViewControllers: [UIViewController] = tabBarItems.map({
+			
+			let vc = UIHostingController(rootView: $0.content)
+			vc.tabBarItem = UITabBarItem(title: $0.title,
+										 image: UIImage(systemName: $0.systemImageName),
+										 tag: $0.index)
+		})
 		
 		// Now we sort them according to the current sort order.
 		var sortedViewControllers: [UIViewController] = []
 		
-		if self.viewControllers.isEmpty || tabOrder.isEmpty {
+		if self.tabBarItems.isEmpty || tabOrder.isEmpty {
 			
 			sortedViewControllers = unsortedViewControllers
 		} else {
