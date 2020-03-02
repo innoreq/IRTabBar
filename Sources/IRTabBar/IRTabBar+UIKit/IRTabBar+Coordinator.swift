@@ -41,7 +41,7 @@ extension IRTabBar {
 			guard let index = tabBarController.customizableViewControllers?.firstIndex(of: viewController)
 				else { return }
 			
-			self.tabBarController.selectedIndex = index
+			self.tabBarController.selectedIndex.wrappedValue = index
 		}
 		
 		
@@ -59,7 +59,7 @@ extension IRTabBar {
 				}
 			}
 			
-			self.tabBarController.tabOrder = newOrder
+			self.tabBarController.tabOrder.wrappedValue = newOrder
 		}
 	}
 }

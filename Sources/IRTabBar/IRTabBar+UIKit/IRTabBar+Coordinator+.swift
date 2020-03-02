@@ -24,7 +24,7 @@ extension IRTabBar.Coordinator: UITableViewDelegate {
 		let moreCount = tableView.numberOfRows(inSection: indexPath.section)
 		let allCount = self.tabBarController.tabBarItems.count
 		
-		self.tabBarController.selectedIndex = allCount - moreCount + indexPath.row
+		self.tabBarController.selectedIndex.wrappedValue = allCount - moreCount + indexPath.row
 		tableDelegate?.tableView?(tableView, didSelectRowAt: indexPath)
 	}
 }

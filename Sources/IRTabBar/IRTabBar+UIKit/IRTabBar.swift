@@ -19,8 +19,8 @@ public struct IRTabBar: UIViewControllerRepresentable {
 				selectedIndex: Binding<Int>,
 				tabOrder: Binding<[Int]>) {
 		
-		self._selectedIndex = selectedIndex
-		self._tabOrder = tabOrder
+		self.selectedIndex = selectedIndex
+		self.tabOrder = tabOrder
 		self.tabBarItems = tabBarItems
 	}
 	
@@ -32,10 +32,13 @@ public struct IRTabBar: UIViewControllerRepresentable {
 	var tabBarItems: [IRTabBarItem]
 	
 	/// This is the currently selected index where the caller must bind to.
-	@Binding public var selectedIndex: Int
+	public var selectedIndex: Binding<Int> {
+		
+		didSet { debugPrint("selectedIndex changed") }
+	}
 	
 	/// The tab order.
-	@Binding public var tabOrder: [Int] {
+	public var tabOrder: Binding<[Int]> {
 		
 		didSet { debugPrint("tabOrder changed") }
 	}
@@ -45,9 +48,9 @@ public struct IRTabBar: UIViewControllerRepresentable {
 
 		debugPrint(">>> IRTabBar: makeUIViewController")
 		
-		if tabOrder.isEmpty {
+		if tabOrder.wrappedValue.isEmpty {
 			
-			self.tabOrder = UserDefaults.standard.object(forKey: "mainTabOrder") as? [Int] ?? []
+			self.tabOrder.wrappedValue = UserDefaults.standard.object(forKey: "mainTabOrder") as? [Int] ?? []
 		}
 		
 		let tabBarController = UITabBarController()
@@ -62,19 +65,20 @@ public struct IRTabBar: UIViewControllerRepresentable {
 			vc.tabBarItem = UITabBarItem(title: $0.title,
 										 image: UIImage(systemName: $0.systemImageName),
 										 tag: $0.index)
+			return vc
 		})
 		
 		// Now we sort them according to the current sort order.
 		var sortedViewControllers: [UIViewController] = []
 		
-		if self.tabBarItems.isEmpty || tabOrder.isEmpty {
+		if self.tabBarItems.isEmpty || tabOrder.wrappedValue.isEmpty {
 			
 			sortedViewControllers = unsortedViewControllers
 		} else {
 			
-			for index in 0..<tabOrder.count {
+			for index in 0..<tabOrder.wrappedValue.count {
 				
-				sortedViewControllers.append(unsortedViewControllers[tabOrder[index]])
+				sortedViewControllers.append(unsortedViewControllers[tabOrder.wrappedValue[index]])
 			}
 		}
 		
@@ -83,7 +87,7 @@ public struct IRTabBar: UIViewControllerRepresentable {
 											animated: true)
 		
 		// Activate the selected one.
-		tabBarController.selectedViewController = sortedViewControllers[selectedIndex]
+		tabBarController.selectedViewController = sortedViewControllers[selectedIndex.wrappedValue]
 		
 		return tabBarController
 	}

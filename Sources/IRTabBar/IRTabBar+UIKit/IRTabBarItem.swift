@@ -14,14 +14,14 @@ public struct IRTabBarItem {
 	
 	public var title: String
 	public var systemImageName: String
-	public var content: AnyView
 	public var index: Int
+	public var content: AnyView
 
 	
 	public init(title: String,
 				systemImageName: String,
-				content: AnyView,
-				index: Int) {
+				index: Int,
+				content: AnyView) {
 
 		self.title = title
 		self.systemImageName = systemImageName
